@@ -32,7 +32,6 @@ $(document).on('ready', function () {
     }
 
     function windowClosed() {
-        console.log('windowClosed');
         $playButton.text('Play Again?');
         $progressBar.hide();
         $playButton.show();
@@ -80,7 +79,6 @@ $(document).on('ready', function () {
                 'User-Agent': 'launcher'
             }
         }, (res) => {
-            console.dir(res);
             let data = [];
             res.on('data', chunk => {
                 data.push(chunk);
@@ -103,7 +101,6 @@ $(document).on('ready', function () {
                             updateVersion();
                         }
                         else {
-                            console.log('up to date');
                             launchGame();
                         }
                     });
