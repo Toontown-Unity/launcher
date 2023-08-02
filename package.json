@@ -1,0 +1,26 @@
+{
+  "name": "toontown-launcher",
+  "version": "0.1.0",
+  "main": "main.js",
+  "dependencies": {
+    "crypto": "^1.0.1",
+    "decompress": "^4.2.0",
+    "decompress-zip": "^0.3.3",
+    "electron": "^14.0.1",
+    "electron-packager": "^15.4.0",
+    "http-request": "^0.7.0",
+    "request": "^2.83.0",
+    "request-progress": "^3.0.0"
+  },
+  "devDependencies": {
+    "electron-winstaller": "^2.6.3"
+  },
+  "scripts": {
+    "start": "electron .",
+    "package-win32": "electron-packager . launcher --overwrite --asar --platform=win32 --arch=ia32 --icon=assets/icons/ico/icon.ico --prune=true --out=release-builds --version-string.CompanyName=Toontown --version-string.FileDescription=\"Launcher for Toontown in Unity Game\" --version-string.ProductName=\"Toontown Launcher\""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": ""
+}

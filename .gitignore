@@ -1,0 +1,8 @@
+node_modules/
+.idea/
+release-builds/
+downloaded/
+build/
+bin.zip
+bin/
+version.txt

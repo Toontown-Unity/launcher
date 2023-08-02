@@ -1,0 +1,143 @@
+body {
+	overflow-x: hidden;
+}
+
+@font-face {
+    font-family: ImpressBT;
+    src: url('font/ImpressBT.ttf')  format('truetype');
+}
+
+html{
+	overflow: auto !important;
+}
+
+.hero-body{
+	background: url("../img/background.jpg") #0074D9;
+	background-repeat: repeat;
+    background-attachment: fixed;
+}
+
+.discord, .twitter{
+	margin-top: 50px;
+	display: inline-block;
+	margin-left: 25px;
+}
+
+.logo{
+	padding-bottom: 5rem;
+	width: auto;
+	-webkit-animation: logozoom  5s ease-in-out infinite;
+    animation: logozoom 5s ease-in-out infinite;
+}
+
+h1.title{
+	font-family: 'ImpressBT', sans-serif;
+	margin-top: 50px;
+	text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+	font-size: 50px;
+}
+
+p.tagline{
+	font-family: 'ImpressBT', sans-serif;
+	font-size: 25px;
+}
+
+p.tag-smaller{
+	font-family: 'ImpressBT', sans-serif;
+	font-size: 20px;
+	color: #eee;
+}
+
+
+@media screen and (max-height: 768px){
+	.logo{
+		margin-top: 0;
+	}
+	.discord, .twitter{
+		margin-top: 20px;
+	}
+	h1.title{
+		margin-top: 20px;
+		font-size: 40px;
+	}
+	p.tagline{
+		font-size: 20px;
+	}
+	p.tag-smaller{
+		font-size: 17px;
+	}
+
+}
+
+@-webkit-keyframes logozoom {
+    0%{
+      -webkit-transform: scale(1);
+    }
+    50%{
+      -webkit-transform: scale(1.04); 
+    }
+    100%{
+      -webkit-transform: scale(1); 
+    }
+} 
+
+@keyframes logozoom  {
+    0%{
+      -webkit-transform: scale(1);
+    }
+    50%{
+      -webkit-transform: scale(1.04); 
+    }
+    100%{
+      -webkit-transform: scale(1); 
+    }
+}
+.mt-10 {
+	margin-top: 10px;
+}
+.mt-20 {
+	margin-top: 20px;
+}
+.mt-30 {
+	margin-top: 30px;
+}
+.mt-40 {
+	margin-top: 40px;
+}
+.mt-50 {
+	margin-top: 50px;
+}
+
+.play-button {
+	font-family: 'ImpressBT', sans-serif;
+	font-size: 25px;
+	background-color: #2196F3;
+	line-height: 28px;
+	-webkit-transition: font-size 0.1s;
+	border:none;
+}
+
+progress.is-primary::-webkit-progress-value {
+	background-color: #2196F3;
+}
+
+.progress.is-primary::-moz-progress-bar {
+	background-color: #2196F3;
+}
+
+.progress-info {
+	font-family: 'ImpressBT', sans-serif;
+	font-size: 20px;
+}
+
+.version-field {
+	padding: 0;
+}
+
+.version-field > div > div.select {
+	width: 100%;
+}
+
+.version-field > div > div.select > select {
+	width: 100%;
+}
