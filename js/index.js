@@ -157,7 +157,20 @@ $(document).on('ready', function () {
     }
 
     function downloadGame(callback, progback, errback) {
-        var downloadUrl = 'https://github.com/Toontown-Unity/releases/releases/latest/download/windows.zip'
+        // change the url based on the platform
+        var downloadUrl
+        if (process.platform === 'darwin') {
+            downloadUrl = 'https://github.com/Toontown-Unity/releases/releases/latest/download/mac.zip'
+        }
+        // add when linux launcher is ready
+        // else if (process.platform === 'linux') or (process.platform === 'linux2')) {
+        //     downloadUrl = 'https://github.com/Toontown-Unity/releases/releases/latest/download/linux.zip'
+        // }
+        else if (process.platform === 'win32')
+        {
+            downloadUrl = 'https://github.com/Toontown-Unity/releases/releases/latest/download/windows.zip'
+        }
+       
         progress(request(downloadUrl), {
             throttle: 100
         })
