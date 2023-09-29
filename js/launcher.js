@@ -13,7 +13,7 @@ let {ipcRenderer} = require('electron');
 function launch(closedCallback, eCallback){
     console.log('launch');
     let client = exec(
-        'bin/Toontown Unity.exe',
+        'bin/Toontown in Unity.exe',
         [],
         {});
 
