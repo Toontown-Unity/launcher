@@ -17,7 +17,8 @@
   },
   "scripts": {
     "start": "electron .",
-    "package-win32": "electron-packager . launcher --overwrite --asar --platform=win32 --arch=ia32 --icon=assets/icons/ico/icon.ico --prune=true --out=release-builds --version-string.CompanyName=Toontown --version-string.FileDescription=\"Launcher for Toontown in Unity Game\" --version-string.ProductName=\"Toontown Launcher\""
+    "package-win32": "electron-packager . launcher --overwrite --asar --platform=win32 --arch=ia32 --icon=assets/icons/ico/icon.ico --prune=true --out=release-builds --version-string.CompanyName=Toontown --version-string.FileDescription=\"Launcher for Toontown in Unity Game\" --version-string.ProductName=\"Toontown Launcher\"",
+    "package-mac-universal": "electron-packager . launcher --overwrite --asar --platform=darwin --arch=universal --icon=assets/icons/icns/icon.icns --prune=true --out=release-builds --version-string.CompanyName=Toontown --version-string.FileDescription=\"Launcher for Toontown in Unity Game\" --version-string.ProductName=\"Toontown Launcher\""
   },
   "keywords": [],
   "author": "",
