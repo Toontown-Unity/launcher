@@ -157,7 +157,26 @@ $(document).on('ready', function () {
     }
 
     function downloadGame(callback, progback, errback) {
-        var downloadUrl = 'https://github.com/Toontown-Unity/releases/releases/latest/download/windows.zip'
+        // change the url based on the platform
+        var downloadUrl
+        // by default we want the base dir to be root
+        // but on mac we want it to be Application Support/Toontown-Unity
+        var baseDir 
+
+        if (process.platform === 'darwin') {
+            baseDir = path.dirname('~/Library/Application Support/Toontown-Unity/')
+            downloadUrl = 'https://github.com/Toontown-Unity/releases/releases/latest/download/mac.zip'
+        }
+        // add when linux launcher is ready
+        // else if (process.platform === 'linux') or (process.platform === 'linux2')) {
+        //     downloadUrl = 'https://github.com/Toontown-Unity/releases/releases/latest/download/linux.zip'
+        // }
+        else if (process.platform === 'win32')
+        {
+            baseDir = "./"
+            downloadUrl = 'https://github.com/Toontown-Unity/releases/releases/latest/download/windows.zip'
+        }
+       
         progress(request(downloadUrl), {
             throttle: 100
         })
@@ -215,7 +234,7 @@ $(document).on('ready', function () {
                 });
 
                 unzipper.extract({
-                    path: 'bin',
+                    path: baseDir,
                     filter: function (file) {
                         return file.type !== "SymbolicLink";
                     }
