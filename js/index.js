@@ -13,6 +13,8 @@ const request = require('request');
 const progress = require('request-progress');
 const decompressZip = require('decompress-zip');
 const http = require('https');
+const path = require('path');
+const os = require('os');
 
 let versionFileContent = '';
 
@@ -54,7 +56,7 @@ $(document).on('ready', function () {
 
         function handleDownloadDone() {
             // Remove downloaded zip
-            fs.unlinkSync('bin.zip');
+            fs.unlinkSync(getDownloadFilePath());
             updateVersion();
             launchGame();
         }
@@ -89,9 +91,9 @@ $(document).on('ready', function () {
                 let content = responseJson.content;
                 versionFileContent = content;
                 
-                if (fs.existsSync('./version.txt') ) {
+                if (fs.existsSync(getVersionFilePath()) ) {
                     //file exists
-                    fs.readFile('./version.txt', 'utf8', (err, data) => {
+                    fs.readFile(getVersionFilePath(), 'utf8', (err, data) => {
                         if (err) {
                             $playButton.text('Failed to read version file');
                             return;
@@ -147,8 +149,32 @@ $(document).on('ready', function () {
         }
     });
 
+    function getVersionFilePath(){
+        if (process.platform === 'darwin') {
+           var TTpath = path.join(os.homedir(), 'Library/Application Support/Toontown in Unity Team/');
+           if (!fs.existsSync(TTpath)) fs.mkdirSync(TTpath,'0777', true);
+           return path.join(TTpath, 'version.txt');
+        }
+        else if (process.platform === 'win32')
+        {
+            return './version.txt';
+        }
+    }
+
+    function getDownloadFilePath(){
+        if (process.platform === 'darwin') {
+           var TTpath = path.join(os.homedir(), 'Library/Application Support/Toontown in Unity Team/');
+           if (!fs.existsSync(TTpath)) fs.mkdirSync(TTpath,'0777', true);
+           return path.join(TTpath, 'bin.zip');
+        }
+        else if (process.platform === 'win32')
+        {
+            return 'bin.zip';
+        }
+    }
+
     function updateVersion() {
-        fs.writeFile('./version.txt', versionFileContent, err => {
+        fs.writeFile(getVersionFilePath(), versionFileContent, err => {
             if (err) {
                 console.error(err);
             }
@@ -157,7 +183,26 @@ $(document).on('ready', function () {
     }
 
     function downloadGame(callback, progback, errback) {
-        var downloadUrl = 'https://github.com/Toontown-Unity/releases/releases/latest/download/windows.zip'
+        // change the url based on the platform
+        var downloadUrl
+        // by default we want the base dir to be root
+        // but on mac we want it to be Application Support/Toontown in Unity Team
+        var baseDir 
+
+        if (process.platform === 'darwin') {
+            baseDir = path.join(os.homedir(), 'Library/Application Support/Toontown in Unity Team/');
+            downloadUrl = 'https://github.com/Toontown-Unity/releases/releases/latest/download/darwin.zip'
+        }
+        // add when linux launcher is ready
+        // else if (process.platform === 'linux') or (process.platform === 'linux2')) {
+        //     downloadUrl = 'https://github.com/Toontown-Unity/releases/releases/latest/download/linux.zip'
+        // }
+        else if (process.platform === 'win32')
+        {
+            baseDir = "./"
+            downloadUrl = 'https://github.com/Toontown-Unity/releases/releases/latest/download/windows.zip'
+        }
+       
         progress(request(downloadUrl), {
             throttle: 100
         })
@@ -200,13 +245,18 @@ $(document).on('ready', function () {
             .on('end', function () {
                 progback(100);
 
-                var unzipper = new decompressZip('bin.zip')
+                var unzipper = new decompressZip(getDownloadFilePath())
 
                 unzipper.on('error', function (err) {
                     console.dir(err);
                 });
 
                 unzipper.on('extract', function (log) {
+                    // On darwin we have to set the executable flag
+                    if (process.platform === 'darwin') {
+                        const execPath = path.join(os.homedir(), 'Library/Application Support/Toontown in Unity Team/client.app/Contents/MacOS/Toontown in Unity');
+                        fs.chmodSync(execPath, 0o755); 
+                    }
                     callback();
                 });
 
@@ -215,12 +265,12 @@ $(document).on('ready', function () {
                 });
 
                 unzipper.extract({
-                    path: 'bin',
+                    path: baseDir,
                     filter: function (file) {
                         return file.type !== "SymbolicLink";
                     }
                 });
             })
-            .pipe(fs.createWriteStream('bin.zip'));
+            .pipe(fs.createWriteStream(getDownloadFilePath()));
     }
 });

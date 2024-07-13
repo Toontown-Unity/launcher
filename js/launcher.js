@@ -8,14 +8,28 @@
  * @authors Alexander, Necromoni
  */
 let exec = require('child_process').execFile;
+const path = require('path');
+const os = require('os');
 let {ipcRenderer} = require('electron');
 
 function launch(closedCallback, eCallback){
     console.log('launch');
-    let client = exec(
-        'bin/Toontown in Unity.exe',
-        [],
-        {});
+    let client = null;
+    if (process.platform === 'darwin') {
+        const execPath = path.join(os.homedir(), 'Library/Application Support/Toontown in Unity Team/client.app/Contents/MacOS/Toontown in Unity');
+        client = exec(
+            execPath,
+            [],
+            {});
+    
+    }
+    else{
+        client = exec(
+            'bin/Toontown in Unity.exe',
+            [],
+            {});
+    
+    }
 
     ipcRenderer.invoke('hide-window');
 
