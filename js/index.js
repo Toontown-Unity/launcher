@@ -56,7 +56,7 @@ $(document).on('ready', function () {
 
         function handleDownloadDone() {
             // Remove downloaded zip
-            fs.unlinkSync('bin.zip');
+            fs.unlinkSync(getDownloadFilePath());
             updateVersion();
             launchGame();
         }
@@ -151,11 +151,25 @@ $(document).on('ready', function () {
 
     function getVersionFilePath(){
         if (process.platform === 'darwin') {
-           return path.join(os.homedir(), 'Library/Application Support/Toontown in Unity Team/version.txt');
+           var TTpath = path.join(os.homedir(), 'Library/Application Support/Toontown in Unity Team/');
+           if (!fs.existsSync(TTpath)) fs.mkdirSync(TTpath,'0777', true);
+           return path.join(TTpath, 'version.txt');
         }
         else if (process.platform === 'win32')
         {
             return './version.txt';
+        }
+    }
+
+    function getDownloadFilePath(){
+        if (process.platform === 'darwin') {
+           var TTpath = path.join(os.homedir(), 'Library/Application Support/Toontown in Unity Team/');
+           if (!fs.existsSync(TTpath)) fs.mkdirSync(TTpath,'0777', true);
+           return path.join(TTpath, 'bin.zip');
+        }
+        else if (process.platform === 'win32')
+        {
+            return 'bin.zip';
         }
     }
 
@@ -231,7 +245,7 @@ $(document).on('ready', function () {
             .on('end', function () {
                 progback(100);
 
-                var unzipper = new decompressZip('bin.zip')
+                var unzipper = new decompressZip(getDownloadFilePath())
 
                 unzipper.on('error', function (err) {
                     console.dir(err);
@@ -257,6 +271,6 @@ $(document).on('ready', function () {
                     }
                 });
             })
-            .pipe(fs.createWriteStream('bin.zip'));
+            .pipe(fs.createWriteStream(getDownloadFilePath()));
     }
 });
